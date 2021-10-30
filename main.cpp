@@ -1,12 +1,16 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
 #include "BullyPath.hpp"
 #include "Constants.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
-#include <cmath>
+#include "Int128.hpp"
 
 ofstream out_stream;
+uint128_t counter = 0;
+
 
 void build_path(BullyPath &path, int n_frames, int total_frames, float max_offset) {
 	float base_dist = path.calculate_current_dist();
@@ -23,7 +27,12 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				//Output solution
 				#pragma omp critical 
 				{
-					out_stream << n_frames << "," << path.start_yaw << "," << fixed << path.start_position[0] << "," << fixed << path.start_position[1] << "," << fixed << path.start_position[2] << "," << fixed << path.speed_ranges[i].first << "," << fixed << path.speed_ranges[i].second << "," << fixed << (base_dist*path.speed_ranges[i].first) << "," << fixed << (base_dist*path.speed_ranges[i].second) << "\n";
+					out_stream << n_frames << "," << path.start_yaw << "," << fixed << path.start_position[0] << "," 
+            << fixed << path.start_position[1] << "," << fixed << path.start_position[2] << "," 
+            << fixed << path.speed_ranges[i].first << "," << fixed << path.speed_ranges[i].second << "," 
+            << fixed << (base_dist*path.speed_ranges[i].first) << "," 
+            << fixed << (base_dist*path.speed_ranges[i].second) << "\n";
+          counter++;
 				}
 			}
 		}
@@ -359,6 +368,8 @@ int main()
 	out_stream.open("BullyPositions.txt");
 
 	find_paths(start_position, min_speed, max_speed, total_frames, max_offset);
-
-	out_stream.close();
+  
+  // RAII will autoclose out_stream, no need to worry about it
+	// out_stream.close();
+  cout << "Found " << to_string(counter) << " solutions" << endl;
 }

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include "Constants.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"

@@ -1,3 +1,6 @@
+#include <cmath>
+#include <cstdint>
+
 #include "BullyPath.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
