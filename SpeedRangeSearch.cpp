@@ -2,6 +2,7 @@
 #include "Constants.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
+#include <cmath>
 
 float get_ou_max_speed(double x_delta, double z_delta, double x0, double z0) {
 	if (x_delta < 0) {

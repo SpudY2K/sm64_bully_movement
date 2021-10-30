@@ -4,6 +4,7 @@
 #include "Constants.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
+#include <cmath>
 
 ofstream out_stream;
 
