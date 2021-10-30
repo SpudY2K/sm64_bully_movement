@@ -143,9 +143,9 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-
+			BullyPath new_path;
 			for (int h = start; h < end; h++) {
-				BullyPath new_path = path;
+				new_path = path;
 
 				if (next_pos_idx == -1) {
 					new_path.checked_positions.push_back(next_position);
@@ -191,9 +191,9 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-
+			BullyPath new_path;
 			for (int h = start; h < end; h++) {
-				BullyPath new_path = path;
+				new_path = path;
 
 				if (next_pos_idx == -1) {
 					new_path.checked_positions.push_back(next_position);
@@ -300,56 +300,56 @@ void find_paths(vector<float> &start_position, float min_speed, float max_speed,
 	*/
 	
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = 0; i < gArctanTable.size() - 1; i++) {
+	for (int i = 0; i < 1024; i++) {
 		cout << gArctanTable[i] << "\n";
 		BullyPath current_path(start_position, gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = gArctanTable.size() - 1; i > 0; i--) {
+	for (int i = 1024; i > 0; i--) {
 		cout << (0x4000 - gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0x4000 - gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = 0; i < gArctanTable.size() - 1; i++) {
+	for (int i = 0; i < 1024; i++) {
 		cout << (0x4000 + gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0x4000 + gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = gArctanTable.size() - 1; i > 0; i--) {
+	for (int i = 1024; i > 0; i--) {
 		cout << (0x8000 - gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0x8000 - gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = 0; i < gArctanTable.size() - 1; i++) {
+	for (int i = 0; i < 1024; i++) {
 		cout << (0x8000 + gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0x8000 + gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = gArctanTable.size() - 1; i > 0; i--) {
+	for (int i = 1024; i > 0; i--) {
 		cout << (0xC000 - gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0xC000 - gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = 0; i < gArctanTable.size() - 1; i++) {
+	for (int i = 0; i < 1024; i++) {
 		cout << (0xC000 + gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, 0xC000 + gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
 	}
 
 	#pragma omp parallel for schedule(dynamic, 1)
-	for (int i = gArctanTable.size() - 1; i > 0; i--) {
+	for (int i = 1024; i > 0; i--) {
 		cout << (-gArctanTable[i]) << "\n";
 		BullyPath current_path(start_position, -gArctanTable[i], min_speed, max_speed);
 		build_path(current_path, 0, total_frames, max_offset);
