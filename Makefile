@@ -22,4 +22,4 @@ main: BullyPath.o SpeedRangeSearch.o Trig.o main.o
 	$(CXX) $(CXXFLAGS) -o main BullyPath.o SpeedRangeSearch.o Trig.o main.o $(LDFLAGS)
 
 clean:
-	*.o main
+	rm -f *.o main
