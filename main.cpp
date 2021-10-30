@@ -1,9 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
+
 #include "BullyPath.hpp"
 #include "Constants.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
+
 
 ofstream out_stream;
 
