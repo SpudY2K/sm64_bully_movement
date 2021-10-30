@@ -143,9 +143,9 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-
+			BullyPath new_path;
 			for (int h = start; h < end; h++) {
-				BullyPath new_path = path;
+				new_path = path;
 
 				if (next_pos_idx == -1) {
 					new_path.checked_positions.push_back(next_position);
@@ -191,9 +191,9 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-
+			BullyPath new_path;
 			for (int h = start; h < end; h++) {
-				BullyPath new_path = path;
+				new_path = path;
 
 				if (next_pos_idx == -1) {
 					new_path.checked_positions.push_back(next_position);

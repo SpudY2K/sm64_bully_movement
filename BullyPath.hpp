@@ -35,6 +35,7 @@ public:
 
 	bool falling = true;
 
+	BullyPath() {}
 	BullyPath(vector<float> pos, int yaw, float min_speed, float max_speed) {
 		start_position = pos;
 		start_yaw = yaw;
