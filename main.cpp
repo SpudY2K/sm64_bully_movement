@@ -8,7 +8,6 @@
 #include "Trig.hpp"
 #include "Int128.hpp"
 
-
 ofstream out_stream;
 uint128_t counter = 0;
 

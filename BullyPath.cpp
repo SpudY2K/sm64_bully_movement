@@ -4,6 +4,7 @@
 #include "BullyPath.hpp"
 #include "SpeedRangeSearch.hpp"
 #include "Trig.hpp"
+#include <cmath>
 
 const double max_dist = pow(2, 31) - 1;
 
