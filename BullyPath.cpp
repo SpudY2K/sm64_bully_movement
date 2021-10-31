@@ -13,8 +13,8 @@ float BullyPath::calculate_current_dist() {
 	float z = 0.0;
 
 	for (int i = 0; i < this->path_positions.back().size(); i++) {
-		x += this->path_positions.back()[i] * gSineTable[this->vector_haus[i]];
-		z += this->path_positions.back()[i] * gCosineTable[this->vector_haus[i]];
+		x += this->path_positions.back()[i] * gSineTable[this->vector_haus[i]] * this->vector_lengths[i];
+		z += this->path_positions.back()[i] * gCosineTable[this->vector_haus[i]] * this->vector_lengths[i];
 	}
 
 	return sqrtf(x * x + z * z);
@@ -27,8 +27,8 @@ void BullyPath::update_speed_ranges(vector<float> position, int type, int angle_
 	float ou_max_speed = -1.0;
 
 	for (int i = 0; i < position.size(); i++) {
-		x_delta += position[i] * gSineTable[this->vector_haus[i]];
-		z_delta += position[i] * gCosineTable[this->vector_haus[i]];
+		x_delta += position[i] * gSineTable[this->vector_haus[i]] * this->vector_lengths[i];
+		z_delta += position[i] * gCosineTable[this->vector_haus[i]] * this->vector_lengths[i];
 	}
 
 	double max_speed = max_dist / fmax(fabs(x_delta), fabs(z_delta));
