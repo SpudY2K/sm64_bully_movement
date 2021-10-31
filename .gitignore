@@ -36,3 +36,6 @@ build/
 
 # Output files
 BullyPositions.txt
+
+# MSVC -march=native helper unignore
+!cmake/msvc_march_native_helper.exe
