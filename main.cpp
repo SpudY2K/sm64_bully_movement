@@ -56,8 +56,10 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 
 		bool stop_falling = false;
 
+		BullyPath new_path;
+
 		if (next_pos_idx == -1 || path.checked_states[next_pos_idx] == STATE_CLEAR || path.checked_states[next_pos_idx] == STATE_START) {
-			BullyPath new_path = path;
+			new_path = path;
 
 			if (next_pos_idx == -1) {
 				new_path.checked_positions.push_back(next_position);
@@ -87,7 +89,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 		}
 
 		if (next_pos_idx == -1 || path.checked_states[next_pos_idx] == STATE_OOB) {
-			BullyPath new_path = path;
+			new_path = path;
 
 			if (next_pos_idx == -1) {
 				new_path.checked_positions.push_back(next_position);
@@ -107,7 +109,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 
 					vector<float> true_next_position = path.path_positions.back();
 
-					new_path.current_direction = fabs(new_path.current_direction);
+					new_path.current_direction = 1.0;
 					new_path.current_yaw += 32767;
 
 					true_next_position.push_back(new_path.current_direction);
@@ -115,6 +117,8 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 
 					int next_hau = (uint16_t)new_path.current_yaw >> 4;
 					new_path.vector_haus.push_back(next_hau);
+
+					new_path.vector_lengths.push_back(new_path.current_length);
 
 					build_path(new_path, n_frames + 1, total_frames, max_offset);
 				}
@@ -143,7 +147,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-			BullyPath new_path;
+
 			for (int h = start; h < end; h++) {
 				new_path = path;
 
@@ -162,7 +166,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 						new_path.checked_positions[i].push_back({ 0.0 });
 					}
 
-					new_path.current_direction = fabs(new_path.current_direction);
+					new_path.current_direction = 1.0;
 
 					vector<float> true_next_position = path.path_positions.back();
 					true_next_position.push_back(new_path.current_direction);
@@ -174,6 +178,8 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 					new_path.current_yaw = atan2s(gCosineTable[next_hau], gSineTable[next_hau]);
 					next_hau = (uint16_t)new_path.current_yaw >> 4;
 					new_path.vector_haus.push_back(next_hau);
+
+					new_path.vector_lengths.push_back(new_path.current_length);
 
 					build_path(new_path, n_frames + 1, total_frames, max_offset);
 				}
@@ -191,7 +197,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 				start = path.checked_states[next_pos_idx] >> 3;
 				end = start + 1;
 			}
-			BullyPath new_path;
+
 			for (int h = start; h < end; h++) {
 				new_path = path;
 
@@ -220,7 +226,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 							new_path.checked_positions[i].push_back({ 0.0 });
 						}
 
-						new_path.current_direction = fabs(new_path.current_direction);
+						new_path.current_direction = 1.0;
 
 						vector<float> true_next_position = next_position;
 						true_next_position.push_back(new_path.current_direction);
@@ -233,6 +239,8 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 						next_hau = (uint16_t)new_path.current_yaw >> 4;
 						new_path.vector_haus.push_back(next_hau);
 
+						new_path.vector_lengths.push_back(new_path.current_length);
+
 						build_path(new_path, n_frames + 1, total_frames, max_offset);
 					}
 				}
@@ -240,7 +248,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 		}
 
 		if (next_pos_idx == -1 || path.checked_states[next_pos_idx] == STATE_FRICTION_FLOOR || path.checked_states[next_pos_idx] == STATE_START || stop_falling) {
-			BullyPath new_path = path;
+			new_path = path;
 
 			if (!stop_falling) {
 				if (next_pos_idx == -1) {
@@ -257,35 +265,30 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 			if (!new_path.speed_ranges.empty()) {
 				new_path.falling = false; //Change to allow falling after friction?
 
-				new_path.current_direction = new_path.current_direction*bully_friction;
+				new_path.current_length = new_path.current_length*bully_friction;
 
 				int current_hau = (uint16_t)new_path.current_yaw >> 4;
 				new_path.current_yaw = atan2s(gCosineTable[current_hau], gSineTable[current_hau]);
 				int next_hau = (uint16_t)new_path.current_yaw >> 4;
 
-				if (next_hau == current_hau) {
-					new_path.path_positions.push_back(next_position);
-
-					build_path(new_path, n_frames + 1, total_frames, max_offset);
+				for (int i = 0; i < new_path.path_positions.size(); i++) {
+					new_path.path_positions[i].push_back({ 0.0 });
 				}
-				else {
-					for (int i = 0; i < new_path.path_positions.size(); i++) {
-						new_path.path_positions[i].push_back({ 0.0 });
-					}
 
-					for (int i = 0; i < new_path.checked_positions.size(); i++) {
-						new_path.checked_positions[i].push_back({ 0.0 });
-					}
-
-					new_path.current_direction = fabs(new_path.current_direction);
-
-					vector<float> true_next_position = path.path_positions.back();
-					true_next_position.push_back(new_path.current_direction);
-					new_path.path_positions.push_back(true_next_position);
-					new_path.vector_haus.push_back(next_hau);
-
-					build_path(new_path, n_frames + 1, total_frames, max_offset);
+				for (int i = 0; i < new_path.checked_positions.size(); i++) {
+					new_path.checked_positions[i].push_back({ 0.0 });
 				}
+
+				new_path.current_direction = 1.0;
+
+				vector<float> true_next_position = path.path_positions.back();
+				true_next_position.push_back(new_path.current_direction);
+				new_path.path_positions.push_back(true_next_position);
+				new_path.vector_haus.push_back(next_hau);
+
+				new_path.vector_lengths.push_back(new_path.current_length);
+
+				build_path(new_path, n_frames + 1, total_frames, max_offset);
 			}
 		}
 	}
