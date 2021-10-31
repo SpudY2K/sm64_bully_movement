@@ -22,6 +22,7 @@ public:
 
 	vector<float> start_position;
 	vector<int> vector_haus;
+	vector<float> vector_lengths = { 1.0 };
 
 	vector<vector<float>> checked_positions = { { 0.0 } };
 	vector<int> checked_states = { STATE_START };
@@ -31,11 +32,13 @@ public:
 	int start_yaw;
 	int current_yaw;
 	float current_direction = 1.0;
+	float current_length = 1.0;
 	int falling_frames = 0;
 
 	bool falling = true;
 
 	BullyPath() {}
+
 	BullyPath(vector<float> pos, int yaw, float min_speed, float max_speed) {
 		start_position = pos;
 		start_yaw = yaw;
