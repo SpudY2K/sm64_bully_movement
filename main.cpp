@@ -173,7 +173,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 					new_path.path_positions.push_back(true_next_position);
 
 					new_path.current_yaw = (new_path.current_yaw >> 4) << 4;
-					new_path.current_yaw = steep_floors[h].first - new_path.current_yaw + 32768;
+					new_path.current_yaw = 2 * steep_floors[h].first - new_path.current_yaw + 32768;
 					int next_hau = (uint16_t)new_path.current_yaw >> 4;
 					new_path.current_yaw = atan2s(gCosineTable[next_hau], gSineTable[next_hau]);
 					next_hau = (uint16_t)new_path.current_yaw >> 4;
@@ -233,7 +233,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 						new_path.path_positions.push_back(true_next_position);
 
 						new_path.current_yaw = (new_path.current_yaw >> 4) << 4;
-						new_path.current_yaw = walls[h].first - new_path.current_yaw + 32768;
+						new_path.current_yaw = 2 * walls[h].first - new_path.current_yaw + 32768;
 						int next_hau = (uint16_t)new_path.current_yaw >> 4;
 						new_path.current_yaw = atan2s(gCosineTable[next_hau], gSineTable[next_hau]);
 						next_hau = (uint16_t)new_path.current_yaw >> 4;
