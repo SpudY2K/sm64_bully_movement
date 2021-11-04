@@ -38,7 +38,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 		}
 	}
 
-	if (n_frames > total_frames || path.speed_ranges.empty() || (base_dist - (total_frames - n_frames)*fabs(path.current_direction))*path.speed_ranges[0].first > max_offset) {
+	if (n_frames > total_frames || path.speed_ranges.empty() || (base_dist - (total_frames - n_frames)*path.current_length)*path.speed_ranges[0].first > max_offset) {
 		return;
 	}
 	else {
