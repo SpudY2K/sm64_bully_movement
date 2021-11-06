@@ -136,7 +136,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 			}
 		}
 
-		if (next_pos_idx == -1 || (path.checked_states[next_pos_idx] & 0x111) == STATE_STEEP_FLOOR) {
+		if (next_pos_idx == -1 || (path.checked_states[next_pos_idx] & 0x7) == STATE_STEEP_FLOOR) {
 			int start; int end;
 
 			if (next_pos_idx == -1) {
@@ -186,7 +186,7 @@ void build_path(BullyPath &path, int n_frames, int total_frames, float max_offse
 			}
 		}
 
-		if (next_pos_idx == -1 || (path.checked_states[next_pos_idx] & 0x111) == STATE_WALL) {
+		if (next_pos_idx == -1 || (path.checked_states[next_pos_idx] & 0x7) == STATE_WALL) {
 			int start; int end;
 
 			if (next_pos_idx == -1) {
